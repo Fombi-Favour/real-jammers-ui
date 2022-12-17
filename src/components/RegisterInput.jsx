@@ -1,14 +1,13 @@
 import React, { useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { UserAuth } from '../context/AuthContext'
 import { CameraOutline } from 'react-ionicons'
 import { FaEye } from 'react-icons/fa'
 
-import { updateProfile } from 'firebase/auth'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { collection, addDoc } from 'firebase/firestore'
 
 import User from '../assets/user.png'
-import { auth, db } from '../firebase'
+import { auth, authDb } from '../firebase-config'
 
 const RegisterInput = () => {
 
@@ -21,16 +20,17 @@ const RegisterInput = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const {createUser} = UserAuth();
+    //const {createUser} = UserAuth();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('')
         try{
-            await createUser(photo, email, password);
+            const { user } = await createUserWithEmailAndPassword(auth, email, password);
+            console.log(user);
             // adding data to firestore
-            await addDoc(collection(db, "users"), {
+            await addDoc(collection(authDb, "users"), {
                 image: photo,
                 firstName: firstname,
                 lastName: lastname,

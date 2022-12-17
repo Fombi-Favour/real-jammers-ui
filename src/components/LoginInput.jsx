@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { UserAuth } from '../context/AuthContext'
 import { FaEye } from 'react-icons/fa'
+
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase-config'
 
 const LoginInput = () => {
 
@@ -10,13 +12,13 @@ const LoginInput = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const {signIn} = UserAuth();
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('')
         try{
-            const {user} = await signIn(email, password);
+            const {user} = await signInWithEmailAndPassword(auth, email, password);
             const {refreshToken, providerData} = user;
 
             localStorage.setItem("user", JSON.stringify(providerData));
