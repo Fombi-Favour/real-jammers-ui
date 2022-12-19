@@ -6,18 +6,18 @@ import { IoIosArrowForward } from 'react-icons/io'
 import Logo from '../assets/logo2.png'
 import Pic from '../assets/emyIcon.png'
 
+export const categories = [
+  {name: 'Keyboard'},
+  {name: 'Drum'},
+  {name: 'Producer'},
+  {name: 'Para-music'},
+  {name: 'Concert'},
+]
+
 const Sidebar = ({ user, closeToggle }) => {
 
   const isNotActiveStyle = 'flex items-center px-5 gap-3 text-gray-500 hover:text-black transition-full duration-200 ease-in-out capitalize';
   const isActiveStyle = 'flex items-center px-5 gap-3 font-extrabold border-r-2 border-black transition-full duration-200 ease-in-out capitalize';
-
-  const categories = [
-    {name: 'Keyboard'},
-    {name: 'Drum'},
-    {name: 'Producer'},
-    {name: 'Para-music'},
-    {name: 'Concert'},
-  ]
 
   const handleCloseSidebar = () => {
     if(closeToggle) closeToggle(false)
