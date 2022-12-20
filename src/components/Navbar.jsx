@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { HiMenu } from "react-icons/hi";
 import { AiFillCloseCircle, AiOutlineSearch } from "react-icons/ai";
-import { Link, animateScroll as scroll, } from "react-scroll";
+import { Link } from "react-scroll";
 
 import Logo from "../assets/logo.png";
 

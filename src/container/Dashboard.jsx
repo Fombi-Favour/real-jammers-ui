@@ -7,7 +7,6 @@ import { Sidebar, UserProfile } from '../components'
 import Pins from './Pins'
 
 import Logo from '../assets/logo2.png'
-import Pic from '../assets/emyIcon.png'
 
 const Dashboard = ({ user }) => {
 
@@ -31,7 +30,7 @@ const Dashboard = ({ user }) => {
             <img src={Logo} alt="logo" className='w-28' />
           </Link>
           <Link to={`user-profile/id`}>
-            <img src={Pic} alt="logo" className='w-20' />
+            <img src={user?.photoURL} alt="profile" className='w-20 rounded-lg' />
           </Link>
         </div>
         {toggleSidebar && (

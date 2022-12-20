@@ -5,8 +5,6 @@ import { IoMdAdd, IoMdSearch, IoIosLogOut } from 'react-icons/io'
 import { auth } from '../firebase-config'
 import { signOut } from 'firebase/auth'
 
-import Pic from '../assets/emyIcon.png'
-
 const DashNavbar = ({ searchTerm, setSearchTerm, user }) => {
 
   const navigate = useNavigate();
@@ -14,6 +12,7 @@ const DashNavbar = ({ searchTerm, setSearchTerm, user }) => {
   const handleLogout = async () => {
     try{
       await signOut(auth);
+      
       navigate('/login');
       console.log('You are logged out');
     }catch(e){
@@ -38,7 +37,7 @@ const DashNavbar = ({ searchTerm, setSearchTerm, user }) => {
       </div>
       <div className='flex gap-3'>
         <Link to={`user-profile/${user?.uid}`} className='hidden md:block'>
-          <img src={Pic} alt="profile" className='w-14 h-12 rounded-lg' />
+          <img src={user?.photoURL} alt="profile" className='w-14 h-12 rounded-lg' />
         </Link>
         <Link to='create-pin' className='bg-black text-white rounded-lg w-12 h-12  md:w-14 md:h-12 flex justify-center items-center'>
           <IoMdAdd />

@@ -1,0 +1,5 @@
+<div className='absolute bottom-1 right-1 flex justify-center items-center z-10 bg-white p-1 rounded-full'>
+    <div className='bg-cyan-700 p-[4px] rounded-full cursor-pointer' onClick={() => img.current.click()}>
+        <CameraOutline color={'white'} width='20px' height='20px' />
+    </div>
+</div>

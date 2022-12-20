@@ -4,7 +4,6 @@ import { RiHomeFill } from 'react-icons/ri'
 import { IoIosArrowForward } from 'react-icons/io'
 
 import Logo from '../assets/logo2.png'
-import Pic from '../assets/emyIcon.png'
 
 export const categories = [
   {name: 'Keyboard'},
@@ -58,7 +57,7 @@ const Sidebar = ({ user, closeToggle }) => {
           className='flex my-5 mb-3 gap-2 p-2 items-center bg-white rounded-lg shadow-lg mx-3'
           onClick={handleCloseSidebar}
           >
-            <img src={Pic} alt="profile" className='w-10 h-10 rounded-full' />
+            <img src={user?.photoURL} alt="profile" className='w-10 h-10 rounded-full' />
             <p>{user.displayName}</p>
           </Link>
       )}
