@@ -25,13 +25,13 @@ const RegisterInput = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+    setError('');
     try {
-      const { user } = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const {user} = await createUserWithEmailAndPassword(auth, email, password);
+      const {refreshToken, providerData} = user;
+
+      localStorage.setItem("user", JSON.stringify(providerData));
+      localStorage.setItem('accessToken', JSON.stringify(refreshToken));
       console.log(user);
       // adding data to firestore
       await addDoc(collection(authDb, "users"), {
@@ -134,10 +134,10 @@ const RegisterInput = () => {
           ) : (
             <div className="flex justify-center items-center">
               <div className="flex flex-col  justify-center items-center relative">
-                <img src={picture} alt="profile" className="w-[200px] h-[160px] rounded-full" />
+                <img src={picture} alt="profile" className="w-[170px] h-[160px] rounded-full" />
                 <button
                   type="button"
-                  className="absolute w-8 h-8 bottom-1 right-1 flex justify-center items-center rounded-full z-10 bg-cyan-700 cursor-pointer outline-none"
+                  className="absolute w-8 h-8 bottom-1 right-3 flex justify-center items-center rounded-full z-10 bg-cyan-700 cursor-pointer outline-none"
                   onClick={deleteImage}
                 >
                   <MdDelete />

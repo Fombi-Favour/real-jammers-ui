@@ -11,10 +11,12 @@ import {
   getDownloadURL,
   deleteObject,
 } from "firebase/storage";
-import { firebaseApp } from "../firebase-config";
+import { firebaseApp, authDb } from "../firebase-config";
 
+import { fetchUser } from '../utils/FetchUser'
 import Spinner from "./Spinner";
 import { categories } from "./Sidebar";
+import { doc, setDoc } from "firebase/firestore";
 
 const CreatePin = ({ user }) => {
   const [title, setTitle] = useState("");
@@ -26,6 +28,7 @@ const CreatePin = ({ user }) => {
   const [videoAsset, setVideoAsset] = useState(null);
   const [wrongVideoType, setWrongVideoType] = useState(false);
 
+  const [userInfo]  = fetchUser();
   const navigate = useNavigate();
   const storage = getStorage(firebaseApp);
 
@@ -38,8 +41,18 @@ const CreatePin = ({ user }) => {
     uploadTask.on(
       "state_changed",
       (snapshot) => {
-        const uploadProgress =
+        const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log('Upload is ' + progress + '% done');
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused');
+              break;
+            case 'running':
+              console.log('Upload is running');
+              break;
+            default: break;
+          }
       },
       (error) => {
         console.log(error);
@@ -62,11 +75,34 @@ const CreatePin = ({ user }) => {
     });
   }
 
-  useEffect(() => {
-    console.log(videoAsset);
-  }, [videoAsset]);
+  useEffect(() => {}, [title, about, destination, category]);
 
-  const savePin = () => {};
+  const savePin = async () => {
+    try{
+      setLoading(true);
+      if(!title && !about && !destination && !category && !videoAsset){
+        setFields(true);
+        setLoading(false);
+        setWrongVideoType(true);
+      }else{
+        const data = {
+          id : `${Date.now()}`,
+          title : title,
+          userId : userInfo?.uid,
+          category : category,
+          about: about,
+          destination : destination,
+          videoUrl : videoAsset,
+        };
+
+        await setDoc(doc(authDb, 'videos', `${Date.now()}`), data);
+        setLoading(false);
+        navigate('/dashboard', { replace: false });
+      }
+    }catch(error){
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex flex-col justify-center items-center mt-5 lg:h-4/5">
@@ -79,7 +115,7 @@ const CreatePin = ({ user }) => {
         <div className="bg-secondaryColor p-3 flex flex-0.7 w-full">
           <div className="flex justify-center items-center flex-col border-2 border-dotted border-gray-300 p-3 w-full h-420">
             {loading && <Spinner />}
-            {wrongVideoType && <p>Wrong video type</p>}
+            {wrongVideoType && <p className="text-red-500">Wrong video type</p>}
             {!videoAsset ? (
               <label>
                 <div className="flex flex-col items-center justify-center h-full cursor-pointer">
@@ -89,8 +125,8 @@ const CreatePin = ({ user }) => {
                     </p>
                     <p className="text-lg">Click to upload</p>
                   </div>
-                  <p className="mt-32 text-gray-400">
-                    Recommendation: use high-quality.....
+                  <p className="mt-32 text-gray-400 text-center">
+                    Use high-quality videos of type mp4, mov, mkv, flv, wmv, avi
                   </p>
                 </div>
                 <input
@@ -125,11 +161,11 @@ const CreatePin = ({ user }) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Add your title here..."
-            className="outline-none text-2xl sm:text-3xl font-medium border-b-2 border-gray-200 p-2"
+            className="outline-none text-2xl sm:text-lg font-medium border-b-2 border-gray-200 p-2"
           />
           {user && (
-            <div className="flex gap-2 my-2 items-center bg-white rounded-lg">
-              <img src={user?.photoURL} alt="profile" className="w-10 h-10 rounded-full" />
+            <div className="flex gap-3 my-2 items-center bg-white rounded-lg">
+              <img src={user?.photoURL} alt="profile" className="w-14 h-11 rounded-full" />
               <p className="font-medium">{user.displayName}</p>
             </div>
           )}
@@ -144,7 +180,7 @@ const CreatePin = ({ user }) => {
             type="text"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
-            placeholder="Add a destination link"
+            placeholder="Add a destination link (any social media profile name)"
             className="outline-none text-base sm:text-lg border-b-2 border-gray-200 p-2"
           />
           <div className="flex flex-col">
@@ -173,7 +209,7 @@ const CreatePin = ({ user }) => {
               <button
                 type="button"
                 onClick={savePin}
-                className="bg-red-500 text-white font-semibold p-2 rounded-full w-28 outline-none"
+                className="bg-[#f1b23bea] border-none text-white font-semibold p-2 rounded-full w-28 outline-none"
               >
                 Save Pin
               </button>

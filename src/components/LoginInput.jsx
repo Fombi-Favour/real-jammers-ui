@@ -23,6 +23,7 @@ const LoginInput = () => {
             localStorage.setItem("user", JSON.stringify(providerData));
             localStorage.setItem('accessToken', JSON.stringify(refreshToken));
 
+            alert("Welcome Back " + user.displayName);
             navigate('/dashboard', {replace: true});
         }catch(e){
             setError(e.message)

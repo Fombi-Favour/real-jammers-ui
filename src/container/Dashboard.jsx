@@ -29,7 +29,7 @@ const Dashboard = ({ user }) => {
           <Link to='/'>
             <img src={Logo} alt="logo" className='w-28' />
           </Link>
-          <Link to={`user-profile/id`}>
+          <Link to={`user-profile/${user?.uid}`}>
             <img src={user?.photoURL} alt="profile" className='w-20 rounded-lg' />
           </Link>
         </div>

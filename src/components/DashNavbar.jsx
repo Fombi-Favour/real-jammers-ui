@@ -14,7 +14,6 @@ const DashNavbar = ({ searchTerm, setSearchTerm, user }) => {
       await signOut(auth);
       
       navigate('/login');
-      console.log('You are logged out');
     }catch(e){
       console.log(e.message);
     }
@@ -37,12 +36,13 @@ const DashNavbar = ({ searchTerm, setSearchTerm, user }) => {
       </div>
       <div className='flex gap-3'>
         <Link to={`user-profile/${user?.uid}`} className='hidden md:block'>
-          <img src={user?.photoURL} alt="profile" className='w-14 h-12 rounded-lg' />
+          <img src={user?.photoURL} alt="profile" className='w-18 h-12 rounded-lg' />
         </Link>
         <Link to='create-pin' className='bg-black text-white rounded-lg w-12 h-12  md:w-14 md:h-12 flex justify-center items-center'>
           <IoMdAdd />
         </Link>
-        <Link to='' className='bg-blue-300 text-white rounded-lg w-12 h-12  md:w-14 md:h-12 flex justify-center items-center' onClick={handleLogout}>
+        <Link to='' className='bg-blue-300 text-white rounded-lg w-12 h-12  md:w-14 md:h-12 flex justify-center items-center'
+          onClick={handleLogout}>
           <IoIosLogOut />
         </Link>
       </div>
