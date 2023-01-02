@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+    li{
+        @apply p-4
+    }
+
+    button{
+        @apply text-white border bg-transparent border-[#47b2e4] transition duration-150
+        hover:bg-[#60c1f1ef] rounded-3xl
+    }
+}
+
+body{
+    font-family: "Poppins", sans-serif;    
+}

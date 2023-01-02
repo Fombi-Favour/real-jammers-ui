@@ -1,0 +1,66 @@
+<div className="m-2">
+      <div className="flex justify-between items-center cursor-pointer shadow-lg hover:shadow-xl rounded-lg overflow-hidden relative">
+        <div
+          onMouseEnter={() => setPostHovered(true)}
+          onMouseLeave={() => setPostHovered(false)}
+          onClick={() => navigate(`pin-details/${feed?.id}`)}
+          className="relative cursor-zoom-in w-auto hover:shadow-lg rounded-lg overflow-hidden transition-all duration-500 ease-in-out"
+        >
+          <video
+            src={feed.videoUrl}
+            muted
+            onMouseOver={(e) => e.target.play()}
+            onMouseOut={(e) => e.target.pause()}
+          />
+          {postHovered && (
+            <div
+              className="absolute top-0 w-full h-full flex flex-col justify-between p-1 pr-2 pt-2 pb-2 z-50"
+              style={{ height: "100%" }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex gap-2">
+                  <a
+                    href={`${feed?.videoUrl}?dl=`}
+                    download
+                    onClick={(e) => e.stopPropagation()}
+                    className="bg-white w-9 h-9 rounded-full flex items-center justify-center text-dark text-xl opacity-75 hover:opacity-100 hover:shadow-md outline-none"
+                  >
+                    <MdDownloadForOffline />
+                  </a>
+                </div>
+                {alreadySaved ? (
+                  <button
+                    type="button"
+                    className="bg-[#f1b23bea] opacity-70 hover:opacity-100 text-white font-medium px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
+                  >
+                    {feed?.save?.length} Saved
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                    }}
+                    type="button"
+                    className="bg-[#f1b23bea] opacity-70 hover:opacity-100 text-white font-medium px-5 py-1 text-base rounded-3xl hover:shadow-md outline-none"
+                  >
+                    Save
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+      <Link
+        to={`user-profile/${userInfo?.uid}`}
+        className="flex gap-2 mt-2 items-center"
+      >
+        <img
+          className="w-12 h-12 rounded-full object-cover"
+          src={userInfo?.image}
+          alt="user-profile"
+        />
+        <p className="font-medium capitalize">{userInfo?.userName}</p>
+      </Link>
+      <p className="text-sm ml-14">{moment(new Date(parseInt(feed.id)).toISOString()).fromNow()}</p>
+    </div>
